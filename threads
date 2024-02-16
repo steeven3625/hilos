@@ -1,0 +1,95 @@
+package clases2;
+
+public class ClasePrincipal {
+    public static void main (String[]args){
+        
+      
+        movimiento we =new movimiento();
+        sonido nms =new sonido();
+        
+        we.start();
+        nms.start();
+}
+}
+
+package clases2;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+public class movimiento extends Thread {
+    @Override
+    public void run(){
+        int ancho = 20; 
+        int alto = 10;
+        int x = 0;
+        int y = 0;
+
+        int derecha = 1;
+        int abajo = 1;
+
+        while (true) {
+            clearConsole();
+            for (int i = 0; i < alto; i++) {
+                for (int j = 0; j < ancho; j++) {
+                    if (i == y && j == x) {
+                        System.out.print("O ");
+                    } else {
+                        System.out.print(". ");
+                    }
+                }
+                System.out.println("");
+            }
+            x += abajo;
+            y += derecha;
+            if (x <= 0 || x >= ancho - 1) {
+                abajo *= -1;
+            }
+            if (y <= 0 || y >= alto - 1) {
+                derecha *= -1; 
+            }
+
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(movimiento.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    public static void clearConsole() {
+        System.out.print("");
+        System.out.flush();
+    }
+}
+
+
+package clases2;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import sun.audio.AudioPlayer;
+import sun.audio.AudioStream;
+
+public class sonido extends Thread {
+    @Override
+    public void run() {
+String sonidoPath = "C:/sonido/sonido.wav";
+        
+        try {
+            // Abrir el archivo de audio como un flujo de entrada
+            FileInputStream fis = new FileInputStream(sonidoPath);
+            AudioStream audioStream = new AudioStream(fis);
+            
+            // Reproducir el audio
+            AudioPlayer.player.start(audioStream);
+            
+        } catch (FileNotFoundException ex) {
+      
+    }   catch (IOException ex) {
+            Logger.getLogger(sonido.class.getName()).log(Level.SEVERE, null, ex);
+        }
+}}
